@@ -35,7 +35,7 @@ class Login extends Component {
           loginLoading: true
         })
         if (values.account === 'admin' && values.password === '123456') {
-          history.push('/dashboard')
+          history.push('/app/dashboard')
         } else {
           message.error('账号密码错误，请重新输入！acc/pwd: admin/123456')
         }
