@@ -1,18 +1,18 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { saveUser } from '@/redux/user/action'
-import '@/style/login.scss'
+import './login.scss'
 import { initCanvas } from '@/utils/canvasMoveEffect'
-import { Form, Icon, Input, Button } from 'antd'
-import API from '@/api/api'
+import { Form, Icon, Input, Button, message } from 'antd'
+// import API from '@/api/api'
 import history from '@/routers/history'
-import { setSessionStorage } from '@/utils/commons'
+// import { setSessionStorage } from '@/utils/commons'
 
 @connect(
   state => ({}),
   { saveUser }
 )
-class login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -21,7 +21,6 @@ class login extends Component {
   }
 
   componentDidMount () {
-    console.log('Component DID MOUNT!')
     initCanvas(this.refs.bg)
     window.addEventListener('resize', function () {
       initCanvas(this.refs.bg)
@@ -32,26 +31,36 @@ class login extends Component {
     e.preventDefault()
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
-        let res = await API.login(values)
-        if (res.code === 200) {
-          // 保存用户信息
-          this.props.saveUser(res.data.userInfo)
-          // 保存token
-          setSessionStorage('access_token', res.data.access_token)
-          setSessionStorage('refresh_token', res.data.refresh_token)
-          history.push('/home')
+        this.setState({
+          loginLoading: true
+        })
+        if (values.account === 'admin' && values.password === '123456') {
+          history.push('/dashboard')
         } else {
-          this.setState({
-            loginLoading: false
-          })
+          message.error('账号密码错误，请重新输入！acc/pwd: admin/123456')
         }
+        this.setState({
+          loginLoading: false
+        })
+        // let res = await API.login(values).catch(err => {
+        //   this.setState({
+        //     loginLoading: false
+        //   })
+        //   message.error('系统异常，请联系管理员！')
+        // })
+        // if (res && res.code === 200) {
+        //   // 保存用户信息
+        //   this.props.saveUser(res.data.userInfo)
+        //   // 保存token
+        //   setSessionStorage('access_token', res.data.access_token)
+        //   setSessionStorage('refresh_token', res.data.refresh_token)
+        //   history.push('/')
+        // } else {
+        //   this.setState({
+        //     loginLoading: false
+        //   })
+        // }
       }
-    })
-  }
-
-  loginLoadingState = () => {
-    this.setState({
-      loginLoading: true
     })
   }
 
@@ -97,7 +106,7 @@ class login extends Component {
               <div className='form-text-forgot'>
                 <a href='/#'>Forgot Password ?</a>
               </div>
-              <Button onClick={this.loginLoadingState} loading={this.state.loginLoading} htmlType='submit' size='large' block>
+              <Button loading={this.state.loginLoading} htmlType='submit' size='large' block>
                 Log In
               </Button>
               <div className='form-text-register'>
@@ -111,6 +120,6 @@ class login extends Component {
   }
 }
 
-const WrappedLoginForm = Form.create({ name: 'login' })(login);
+const WrappedLoginForm = Form.create({ name: 'login' })(Login)
 
 export default WrappedLoginForm

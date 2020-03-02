@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Spin } from 'antd'
 import './loading.scss'
 
-class loading extends Component {
+class Loading extends Component {
   render () {
     return (
       <div className='loading-container'>
@@ -12,4 +12,4 @@ class loading extends Component {
   }
 }
 
-export default loading 
+export default Loading 
