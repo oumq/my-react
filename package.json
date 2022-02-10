@@ -171,7 +171,7 @@
     "@hot-loader/react-dom": "^16.11.0",
     "babel-plugin-import": "^1.13.0",
     "fibers": "^4.0.2",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "react-hot-loader": "^4.12.18",
     "sass": "^1.25.0",
     "typescript": "^3.7.5",
